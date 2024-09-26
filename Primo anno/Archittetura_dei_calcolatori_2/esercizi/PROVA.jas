@@ -1,0 +1,16 @@
+.main
+inserisci:
+          IN
+          DUP
+          IFEQ nulla
+          DUP
+		  BIPUSH 0x41
+		  ISUB
+		  IFEQ fine
+		  OUT
+nulla:
+      POP
+	  GOTO inserisci
+fine:
+      HALT
+.end-main

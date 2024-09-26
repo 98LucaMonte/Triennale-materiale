@@ -1,0 +1,36 @@
+.constant
+OBJREF 0xAAAA // valore arbitrario (param. OBJREF invokevirtual)
+.end-constant
+.main
+.var
+i
+.end-var
+    BIPUSH 65   // top-of-stack =codice ascii 'A' = 0x41 esadecimale = 65 decimale
+    DUP 
+ciclo:          // do      
+    OUT         // stampa top-of-stack
+    BIPUSH 1
+    IADD        // top-of-stack++
+    DUP
+    BIPUSH 91   // 65+26 = 0x5B = codice 'Z'+1
+    IF_ICMPEQ stampanum
+    DUP
+    GOTO ciclo // while(c=!=91)
+stampanum:   
+    POP
+    BIPUSH 0x0A // codice ASCII newline
+    OUT
+    BIPUSH 0    // ciclo for (i=0; i<10; i++) 
+    ISTORE i
+ciclonum:
+    BIPUSH 0x30 
+    ILOAD i
+    IADD     
+    OUT         // stampa i+0x30
+    IINC i 1    // i++
+    ILOAD i
+    BIPUSH 10
+    ISUB
+    IFLT ciclonum // se i<10 goto ciclonum
+    HALT
+.end-main

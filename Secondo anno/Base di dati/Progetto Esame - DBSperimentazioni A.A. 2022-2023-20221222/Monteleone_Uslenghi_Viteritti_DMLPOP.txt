@@ -1,0 +1,194 @@
+/*utente*/
+/*Utente*/
+INSERT INTO utente VALUES('20033851@studenti.uniupo.it','Anna','28/09/1999','f','utente','Viteritti');
+
+INSERT INTO utente VALUES('20015308@studenti.uniupo.it','Umberto','07/09/1996','m','utente','Uslenghi');
+
+INSERT INTO utente VALUES('20026665@studenti.uniupo.it','Luca','21/04/1998','m','utente','Monteleone');
+/*utente FRAGILI*/
+INSERT INTO utente VALUES('20012345@studenti.uniupo.it','Roberta','20/09/1999','f','utenteFragile','Rossi');
+
+INSERT INTO utente VALUES('20054321@studenti.uniupo.it','Filippo','05/05/1996','m','utenteFragile','Verdi');
+
+INSERT INTO utente VALUES('20098765@studenti.uniupo.it','Mario','01/01/1998','m','utenteFragile','Gallo');
+/*CURATORI*/
+INSERT INTO utente VALUES('20022222@studenti.uniupo.it','Riccardo','02/09/1989','m','curatore','Freddi');
+
+INSERT INTO utente VALUES('20011111@studenti.uniupo.it','Maria','01/08/1986','f','curatore','Lorelli');
+
+INSERT INTO utente VALUES('20033333@studenti.uniupo.it','Giorgio','11/11/1992','m','curatore','Grillo');
+/*CURATORI Fragili*/
+INSERT INTO utente VALUES('20044444@studenti.uniupo.it','Riccardo','02/09/1989','m','curatoreFragile','Freddi');
+
+INSERT INTO utente VALUES('20055555@studenti.uniupo.it','Maria','01/08/1986','f','curatoreFragile','Lorelli');
+
+INSERT INTO utente VALUES('20066666@studenti.uniupo.it','Giorgio','11/11/1992','m','curatoreFragile','Grillo');
+
+/*gruppo*/
+
+INSERT INTO gruppo (nome,emailCreatoreGruppo,tipologia) VALUES('gruppo1','20033333@studenti.uniupo.it','Cubismo');
+
+INSERT INTO gruppo (nome,emailCreatoreGruppo,tipologia) VALUES('gruppo2','20033333@studenti.uniupo.it','Rinascimento');
+
+INSERT INTO gruppo (nome,emailCreatoreGruppo,tipologia) VALUES('gruppo1','20011111@studenti.uniupo.it','Arte povera');
+
+INSERT INTO gruppo (nome,emailCreatoreGruppo,tipologia) VALUES('gruppo2','20011111@studenti.uniupo.it','Gotico');
+
+INSERT INTO gruppo VALUES('gruppo3','20022222@studenti.uniupo.it','Realismo','20033851@studenti.uniupo.it');
+
+INSERT INTO gruppo VALUES('gruppo4','20022222@studenti.uniupo.it','Arte Moderna','20015308@studenti.uniupo.it');
+
+INSERT INTO gruppo VALUES('gruppo5','20022222@studenti.uniupo.it','Romanticismo','20026665@studenti.uniupo.it');
+
+/*partecipa*/
+INSERT INTO partecipa VALUES('20033851@studenti.uniupo.it','20022222@studenti.uniupo.it','gruppo5');
+INSERT INTO partecipa VALUES('20015308@studenti.uniupo.it','20022222@studenti.uniupo.it','gruppo5');
+INSERT INTO partecipa VALUES('20054321@studenti.uniupo.it','20022222@studenti.uniupo.it','gruppo5');
+INSERT INTO partecipa VALUES('20011111@studenti.uniupo.it','20022222@studenti.uniupo.it','gruppo5');
+INSERT INTO partecipa VALUES('20022222@studenti.uniupo.it','20022222@studenti.uniupo.it','gruppo5');
+
+INSERT INTO partecipa VALUES('20026665@studenti.uniupo.it','20011111@studenti.uniupo.it','gruppo1');
+INSERT INTO partecipa VALUES('20011111@studenti.uniupo.it','20011111@studenti.uniupo.it','gruppo1');
+
+INSERT INTO partecipa VALUES('20022222@studenti.uniupo.it','20033333@studenti.uniupo.it','gruppo1');
+INSERT INTO partecipa VALUES('20033333@studenti.uniupo.it','20033333@studenti.uniupo.it','gruppo1');
+
+/*storia*/
+
+INSERT INTO storia VALUES (1, 'Oltre le dune del Sahara', 'Un uomo intraprende un viaggio in solitaria attraverso il deserto del Sahara, alla ricerca di se stesso.', '2023-05-01 12:00:00', '2023-05-01 16:00:00', '#OltreLeDune','20026665@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (2, 'La verità sepolta', 'Una giovane donna si ritrova coinvolta in una rete di intrighi politici mentre cerca di scoprire la verità sulla morte del padre.', '2023-04-15 10:00:00', '2023-04-15 12:00:00', '#LaVeritaSepolta','20026665@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (3, 'Un viaggio per due', 'Una coppia di sposi in crisi cerca di riaccendere la passione attraverso un viaggio romantico in Italia.', '2023-05-02 08:00:00', '2023-05-02 10:00:00', '#ViaggioRomantico','20033851@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (4, 'Invasione aliena', 'Un gruppo di sopravvissuti in un mondo post-apocalittico si uniscono per lottare contro una minaccia aliena.', '2023-05-03 12:00:00', '2023-05-03 14:00:00', '#InvasioneAliena','20033851@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (5, 'Note nella città', 'Un giovane musicista lotta per raggiungere il successo nella scena musicale di New York City.', '2023-04-01 09:00:00', '2023-04-01 18:00:00', '#NoteNellaCitta','20015308@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (6, 'Tra il palcoscenico e la medicina', 'Una ragazza deve scegliere tra il suo amore per la danza e le aspettative della famiglia riguardo alla carriera medica.', '2023-03-01 13:00:00', '2023-03-01 14:00:00', '#TraPalcoscenicoEMedicina','20011111@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (7, 'Ombre del passato', 'Un detective privato indaga su un caso di omicidio che lo porta a confrontarsi con i suoi demoni interiori.', '2023-04-05 10:00:00', '2023-04-05 12:00:00', '#OmbreDelPassato','20022222@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (8, 'Ricostruire il futuro', 'Una giovane donna cerca di ricostruire la propria vita dopo essere stata vittima di abusi domestici.', '2023-04-04 12:00:00', '2023-04-04 12:00:00', '#RicostruireIlFuturo','20012345@studenti.uniupo.it');
+
+INSERT INTO storia VALUES (9, 'Avventura nella giungla', 'Un gruppo di amici decide di fare un viaggio in Sud America, ma si ritrovano coinvolti in una pericolosa avventura nella giungla.', '2023-05-01 08:00:00', '2023-05-01 12:00:00', '#AvventuraNellaGiungla','20012345@studenti.uniupo.it');
+
+/*autore*/
+
+INSERT INTO autore VALUES (1, 'Leonardo', 'Rinascimento', '1452-04-15', '1519-05-02', 'Alto Rinascimento');
+INSERT INTO autore VALUES (2, 'Michelangelo', 'Rinascimento', '1475-03-06', '1564-02-18', 'Alto Rinascimento');
+INSERT INTO autore VALUES (3, 'Raffaello', 'Rinascimento', '1483-04-06', '1520-04-06', 'Alto Rinascimento');
+INSERT INTO autore VALUES (4, 'Caravaggio', 'Barocco', '1571-09-29', '1610-07-18', 'Barocco');
+INSERT INTO autore (codiceAutore, nome, stilePittorico, dataNascita, movimentoartistico) VALUES (11, 'Banksy', 'Street Art', '1974-07-28', 'Street Art');
+INSERT INTO autore (codiceAutore, nome, stilePittorico, dataNascita, movimentoartistico) VALUES (12, 'Yayoi Kusama', 'Arte contemporanea', '1929-03-22', 'Arte contemporanea');
+INSERT INTO autore (codiceAutore, nome, stilePittorico, dataNascita, movimentoartistico) VALUES (13, 'Jeff Koons', 'Arti visive', '1955-01-21', 'Arti visive');
+INSERT INTO autore (codiceAutore, nome, stilePittorico, dataNascita, movimentoartistico) VALUES (14, 'Ai Weiwei', 'Arte contemporanea', '1957-08-28', 'Arte contemporanea');
+
+/*opere d'arte*/
+
+INSERT INTO operaArte VALUES ('La Gioconda', '1503', 'Ritratto di Lisa Gherardini, moglie di Francesco del Giocondo', 'Olio su tavola', true, 1);
+
+INSERT INTO operaArte VALUES ('La Pietà', '1499', 'Scultura marmorea raffigurante la Vergine Maria con il corpo morto di Gesù', 'Marmo', false, 2);
+
+INSERT INTO operaArte VALUES ('I Bari', '1594', 'Dipinto raffigurante la crocifissione di San Pietro', 'Olio su tela', false, 4);
+
+INSERT INTO operaArte VALUES ('Girl with Balloon', '2006', 'Stencil che raffigura una bambina che cerca di afferrare un palloncino a forma di cuore', 'Spray su cartone', true, 11);
+
+INSERT INTO operaArte VALUES ('Infinity Mirror Room', '1965', 'Installazione di specchi con luci colorate che creano una illusione di un infinito riflessivo', 'Specchi, luci', false, 12);
+
+INSERT INTO operaArte VALUES ('Balloon Dog', '1994', 'Serie di sculture a forma di cane realizzate in acciaio inossidabile', 'Acciaio inossidabile', true, 13);
+
+INSERT INTO operaArte VALUES ('Dropping a Han Dynasty Urn', '1995', 'Serie di tre fotografie in cui artista lascia cadere e distrugge una antica urna della dinastia Han', 'Fotografia', true, 14);
+
+INSERT INTO operaArte VALUES ('David', '1501', 'Statua in marmo raffigurante il personaggio biblico', 'Marmo', false, 2);
+
+INSERT INTO operaArte VALUES ('La Scuola di Atene', '1510', 'Affresco rappresentante il mondo accademico della antica Grecia', 'Affresco', true, 3);
+
+INSERT INTO operaArte VALUES ('Bacchino malato', '1593', 'Dipinto raffigurante un giovane ragazzo malato', 'Olio su tela', true, 4);
+
+/*sensazione*/
+
+INSERT INTO sensazione (emailUtente,titoloOp,codiceA,risposta1,risposta2,risposta3) VALUES ('20033851@studenti.uniupo.it','La Gioconda',1,'Felicità','Interessante','Pensierosa');
+INSERT INTO sensazione (emailUtente,titoloOp,codiceA,risposta1,risposta2,risposta3) VALUES ('20033851@studenti.uniupo.it','La Pietà',2,'Unione','Tristezza','Interessante');
+
+INSERT INTO sensazione VALUES ('20026665@studenti.uniupo.it','I Bari',4,'Unione','Astuzia','Avaria','#GiocoAzzardo','emoijCarte');
+INSERT INTO sensazione (emailUtente,titoloOp,codiceA,risposta1,risposta2,risposta3) VALUES ('20026665@studenti.uniupo.it','La Pietà',2,'Unione','Malinconia','Interessante');
+
+INSERT INTO sensazione VALUES ('20015308@studenti.uniupo.it','Girl with Balloon',11,'Tristezza','Gioventu','Paura','#Palloncino','emoijPalloncino');
+INSERT INTO sensazione (emailUtente,titoloOp,codiceA,risposta1,risposta2,risposta3) VALUES ('20015308@studenti.uniupo.it','Balloon Dog',13,'Felicità','Interessante','Gioia');
+
+INSERT INTO sensazione (emailUtente,titoloOp,codiceA,risposta1,risposta2,risposta3) VALUES ('20022222@studenti.uniupo.it','La Scuola di Atene',3,'Felicità','Amicizia','Riflessiva');
+INSERT INTO sensazione (emailUtente,titoloOp,codiceA,risposta1,risposta2,risposta3) VALUES ('20011111@studenti.uniupo.it','La Pietà',2,'Unione','Tristezza','Interessante');
+INSERT INTO sensazione (emailUtente,titoloOp,codiceA,risposta1,risposta2,risposta3) VALUES ('20022222@studenti.uniupo.it','David',2,'Stupore','Perfezione','Pensierosa');
+
+/*giudizio*/
+
+INSERT INTO giudizio (emailUtente,idStoriaGiudicata,likeStoria,votoLikert) VALUES ('20033851@studenti.uniupo.it',1,true,8);
+INSERT INTO giudizio (emailUtente,idStoriaGiudicata,likeStoria,votoLikert) VALUES ('20033851@studenti.uniupo.it',2,false,4);
+INSERT INTO giudizio (emailUtente,idStoriaGiudicata,likeStoria,votoLikert) VALUES ('20026665@studenti.uniupo.it',3,true,9);
+INSERT INTO giudizio (emailUtente,idStoriaGiudicata,likeStoria,votoLikert) VALUES ('20026665@studenti.uniupo.it',4,false,3);
+INSERT INTO giudizio VALUES ('20033851@studenti.uniupo.it',8,'Bella storia',true,9);
+INSERT INTO giudizio (emailUtente,idStoriaGiudicata,likeStoria,votoLikert) VALUES ('20026665@studenti.uniupo.it',8,true,6);
+
+/*contiene*/
+
+INSERT INTO contiene VALUES('Balloon Dog',13,1);
+INSERT INTO contiene VALUES('Dropping a Han Dynasty Urn',14,1);
+
+INSERT INTO contiene VALUES('La Gioconda',1,2);
+INSERT INTO contiene VALUES('La Scuola di Atene',3,2);
+INSERT INTO contiene VALUES('Girl with Balloon',11,2);
+
+INSERT INTO contiene VALUES('Bacchino malato',4,3);
+INSERT INTO contiene VALUES('La Gioconda',1,3);
+
+INSERT INTO contiene VALUES('La Gioconda',1,4);
+INSERT INTO contiene VALUES('La Scuola di Atene',3,4);
+
+INSERT INTO contiene VALUES('Girl with Balloon',11,5);
+INSERT INTO contiene VALUES('La Gioconda',1,5);
+
+INSERT INTO contiene VALUES('Girl with Balloon',11,6);
+INSERT INTO contiene VALUES('Bacchino malato',4,6);
+
+INSERT INTO contiene VALUES('Dropping a Han Dynasty Urn',14,7);
+INSERT INTO contiene VALUES('La Gioconda',1,7);
+
+INSERT INTO contiene VALUES('La Scuola di Atene',3,8);
+INSERT INTO contiene VALUES('Bacchino malato',4,8);
+
+INSERT INTO contiene VALUES('La Scuola di Atene',3,9);
+INSERT INTO contiene VALUES('Girl with Balloon',11,9);
+INSERT INTO contiene VALUES('Bacchino malato',4,9);
+
+/*storia raccomandata*/
+INSERT INTO storiaRaccomandata VALUES(1,2,4,7);
+INSERT INTO storiaRaccomandata VALUES(2,3,5,6);
+INSERT INTO storiaRaccomandata VALUES(3,9,4,7);
+INSERT INTO storiaRaccomandata VALUES(4,7,5,6);
+INSERT INTO storiaRaccomandata VALUES(5,2,6,7);
+INSERT INTO storiaRaccomandata VALUES(6,3,5,9);
+INSERT INTO storiaRaccomandata VALUES(7,2,4,8);
+INSERT INTO storiaRaccomandata VALUES(8,3,5,6);
+INSERT INTO storiaRaccomandata VALUES(9,2,4,7);
+INSERT INTO storiaRaccomandata VALUES(10,2,4,8);
+INSERT INTO storiaRaccomandata VALUES(11,3,5,6);
+INSERT INTO storiaRaccomandata VALUES(12,2,4,7);
+/*suggerisce*/
+INSERT INTO suggerisce VALUES(1,12);
+INSERT INTO suggerisce VALUES(1,11);
+INSERT INTO suggerisce VALUES(2,10);
+INSERT INTO suggerisce VALUES(2,9);
+INSERT INTO suggerisce VALUES(3,8);
+INSERT INTO suggerisce VALUES(4,7);
+INSERT INTO suggerisce VALUES(5,6);
+INSERT INTO suggerisce VALUES(6,5);
+INSERT INTO suggerisce VALUES(7,4);
+INSERT INTO suggerisce VALUES(8,3);
+INSERT INTO suggerisce VALUES(9,2);
+INSERT INTO suggerisce VALUES(9,1);
+
+
+
+
+

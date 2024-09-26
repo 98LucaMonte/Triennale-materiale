@@ -1,0 +1,18 @@
+.main
+BIPUSH 0
+leggicarattere:
+               IN
+               DUP
+               IFEQ nulla
+               DUP
+               BIPUSH 0x0A
+               ISUB
+               IFEQ fine
+               OUT
+			   GOTO leggicarattere
+nulla:
+      POP
+      GOTO leggicarattere
+fine:
+     HALT
+.end-main

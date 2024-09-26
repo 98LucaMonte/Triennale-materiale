@@ -1,0 +1,24 @@
+/*
+Selezionare tutte le storie degli utenti di età compresa tra [35<=x<=50] anni (estremi inclusi) che contengono almeno 2 opere d'arte (>=2).
+Ordinare le storie in ordine decrescente di durata della storia (durata =TimeStampFine - TimeStampInizio)
+
+IdStoria	  TitoloStoria	  NumeroOpere 	  Durata (secondi)
+1234567	  Vacanze al mare	  3	  						   78
+1230981	  Notte d'inverno  	  2                      	   42
+*/
+
+select t1.idStoria "IdStoria",t1.titolo "TitoloStoria",t1."NumeroOpere",t1."Durata (secondi)" 
+from(
+select utente.email,età.etaUtente,storia.idStoria,storia.titolo,count(contiene.titoloop) "NumeroOpere",
+	   cast(EXTRACT (EPOCH FROM (storia.tempofine-storia.tempoinizio)) as numeric(10)) "Durata (secondi)" 
+from utente inner join età on utente.email = età.email
+	 inner join storia on storia."emailCreatoreStoria" = utente.email
+	 inner join contiene on storia.idStoria = contiene.idSto
+where età.etaUtente between 35 and 50
+group by utente.email,età.etaUtente,storia.idStoria,storia.titolo
+) as t1
+where t1."NumeroOpere" >= 2
+
+
+
+

@@ -1,0 +1,32 @@
+.main
+.var
+cont
+.end-var
+// legge i caratteri inseriti da tastiera e li stampa sulla
+// console dell'emulatore (echo). Termina quando viene inserito un "."
+// In cont alla fine abbiamo il numero di caratteri inseriti.
+    BIPUSH 0
+    ISTORE cont
+leggicarattere:
+    IN
+    DUP
+    IFEQ buffervuoto    // se IN ha restituito 0 non è stato 
+                        // ancora inserito il carattere
+    GOTO elaboracarattere
+buffervuoto:            
+    POP                 // elimina lo zero (generato dalla DUP)
+    GOTO leggicarattere
+elaboracarattere:
+    DUP
+    BIPUSH 0x2E // codice ascii del .
+    IF_ICMPEQ fine
+    OUT         // stampo il carattere letto (lo consuma)
+    IINC cont 1 // al termine conosco il numero esatto
+                // del numero di cartteri scritti (escl.il punto)
+    GOTO leggicarattere
+fine:
+    POP // elimino il . che è rimasto sullo stack
+    HALT
+.end-main
+
+    

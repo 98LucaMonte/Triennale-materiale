@@ -1,0 +1,4 @@
+int var	intvar
+float var	floatvar
+print ciao	printciao
+var.var

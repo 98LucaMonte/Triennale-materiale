@@ -1,0 +1,22 @@
+.constant
+ZERO 0x30  // ASCII '0'
+UNO 0x31   // ASCII '1'
+NOVE 0x39 // ASCII '9'
+UNMILIARDO 1000000000 // un miliardo (massima potenza di 10 in un numero su 32 bit) infatti 2^31-1 = 2.147.483.647
+INVIO 0x0A // ASCII INVIO
+OBJREF 0x40
+.end-constant
+.main
+BIPUSH 0
+
+leggicarattere:
+	IN
+	DUP
+	IFEQ nulla
+	DUP
+	OUT
+nulla:  
+	POP
+	GOTO leggicarattere
+	HALT
+.end-main

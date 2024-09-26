@@ -1,0 +1,18 @@
+.costant
+k 5
+.end-costant
+.main
+.var
+y
+x
+.end-var
+BIPUSH 5
+ISTORE x
+LDC_W k
+ISTORE y
+ILOAD x
+ILOAD y
+ISTORE x
+ISTORE y
+HALT
+.end-main

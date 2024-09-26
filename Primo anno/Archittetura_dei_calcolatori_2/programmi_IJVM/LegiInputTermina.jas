@@ -1,0 +1,23 @@
+.constant
+ASCIIZERO 0x30
+ASCIIUNO  0x31
+OBJREF    0x40
+INVIO 0x0A // ASCII INVIO
+.end-constant
+
+.main
+BIPUSH 0
+leggicarattere:
+	IN
+	DUP
+	IFEQ nulla
+	DUP
+	LDC_W INVIO 
+	IF_ICMPEQ fine  // se è stato premuto enter
+	OUT
+nulla:  
+	POP
+	GOTO leggicarattere
+fine:
+HALT
+.end-main

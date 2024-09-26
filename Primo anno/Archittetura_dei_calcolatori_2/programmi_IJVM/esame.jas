@@ -1,0 +1,36 @@
+//Si scriva un metodo IJVM confronta(i,k) che dopo aver confrontato
+//i e k stampi 1 se il confronto e maggiore o uguale a 0 e "0" se minore di 0 
+.constant
+OBJREF 0xFF
+.end-constant
+
+.main
+LDC_W OBJREF
+BIPUSH -2
+BIPUSH -1
+INVOKEVIRTUAL confronta
+HALT
+.end-main
+
+.method confronta(i,k)
+.var
+.end-var
+ILOAD i
+ILOAD k
+ISUB 
+IFLT stampa0 
+GOTO stampa1
+stampa0: BIPUSH 0
+         BIPUSH 0x30
+		 IADD
+         OUT
+         IRETURN
+stampa1: BIPUSH 1
+         BIPUSH 0x30
+		 IADD
+         OUT
+         IRETURN
+.end-method
+
+
+

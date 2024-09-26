@@ -1,0 +1,27 @@
+//stampa 10 volte HELLO WORLD
+.main
+.var
+i
+.end-var
+BIPUSH 0
+ISTORE i
+ciclo:
+      BIPUSH 72 
+      OUT
+      BIPUSH 69
+      OUT
+      BIPUSH 76
+      OUT
+      BIPUSH 76
+      OUT
+      BIPUSH 79
+      OUT
+      IINC i 1
+      ILOAD i
+      BIPUSH 10
+      ISUB
+	  IFEQ fine
+      GOTO ciclo
+fine:
+     HALT
+.end-main

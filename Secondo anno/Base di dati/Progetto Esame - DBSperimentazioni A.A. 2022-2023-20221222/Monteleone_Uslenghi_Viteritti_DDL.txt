@@ -1,0 +1,163 @@
+CREATE TABLE utente
+(
+    email varchar(35),
+    nome varchar(15) NOT NULL,
+    dataNascita date NOT NULL,
+    genere char(1) NOT NULL,
+    categoria varchar(15) NOT NULL,
+    cognome varchar(15) NOT NULL,
+    CONSTRAINT utente_pkey PRIMARY KEY (email),
+    CONSTRAINT utente_check1 CHECK (categoria = 'curatore' OR categoria = 'curatoreFragile' OR categoria = 'utente' OR categoria ='utenteFragile'),
+    CONSTRAINT utente_check2 CHECK (genere = 'm' OR genere = 'f')
+);
+
+CREATE TABLE gruppo
+(
+    nome varchar(15),
+    emailCreatoreGruppo varchar(35),
+    tipologia varchar(15) NOT NULL,
+    emailSupervisoreGruppo varchar(35),	
+    CONSTRAINT gruppo_pkey PRIMARY KEY (nome, emailCreatoreGruppo),
+    CONSTRAINT utente_gruppo_fkey1 FOREIGN KEY (emailCreatoreGruppo) REFERENCES utente (email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT utente_gruppo_fkey2 FOREIGN KEY (emailSupervisoreGruppo) REFERENCES utente (email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+CREATE TABLE partecipa
+(
+    emailPartecipanteGruppo varchar(35),
+    emailCreatoreGruppo varchar(35),
+    nomeGruppo varchar(15),
+    CONSTRAINT partecipa_pkey PRIMARY KEY (emailPartecipanteGruppo, emailCreatoreGruppo, nomeGruppo),
+    CONSTRAINT utente_partecipa_fkey FOREIGN KEY (emailPartecipanteGruppo) REFERENCES utente (email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT gruppo_partecipa_fkey FOREIGN KEY (emailCreatoreGruppo, nomeGruppo) REFERENCES gruppo (emailCreatoreGruppo, nome)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+CREATE TABLE storia
+(
+    idStoria integer,
+    titolo varchar(35) NOT NULL,
+    descrizione varchar(255) NOT NULL,
+    tempoinizio timestamp NOT NULL,
+    tempofine timestamp NOT NULL,
+    hashtag varchar(35) NOT NULL,
+    emailCreatoreStoria varchar(35) NOT NULL,
+    CONSTRAINT storia_pkey PRIMARY KEY (idStoria),
+    CONSTRAINT utente_storia_fkey FOREIGN KEY (emailCreatoreStoria) REFERENCES utente (email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+CREATE TABLE autore
+(
+    codiceAutore integer,
+    nome varchar(15) NOT NULL,
+    stilePittorico varchar(35) NOT NULL,
+    dataNascita date NOT NULL,
+    dataMorte date,
+    movimentoArtistico varchar(35) NOT NULL,
+    CONSTRAINT autore_pkey PRIMARY KEY (codiceAutore)
+);
+
+CREATE TABLE operaArte
+(
+    titoloOpera varchar(35),
+    annoRealizzazione char(4) NOT NULL,
+    descrizione varchar(255) NOT NULL,
+    materiale varchar(35) NOT NULL,
+    online boolean NOT NULL,
+    codiceAut integer,
+    CONSTRAINT operaArte_pkey PRIMARY KEY (titoloOpera, codiceAut),
+    CONSTRAINT autore_operaArte_fkey FOREIGN KEY (codiceAut) REFERENCES autore (codiceAutore)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+CREATE TABLE contiene
+(
+    titoloOp varchar(35),
+    codiceA integer,
+    idSto integer,
+    CONSTRAINT contiene_pkey PRIMARY KEY (titoloOp, codiceA, idSto),
+    CONSTRAINT operaArte_contiene_fkey FOREIGN KEY (titoloOp, codiceA) REFERENCES operaArte (titoloOpera, codiceAut)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT storia_contiene_fkey FOREIGN KEY (idSto) REFERENCES storia (idStoria)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+CREATE TABLE storiaRaccomandata
+(
+    idStoriaRaccomandata integer,
+    idRaccomandataSimile integer NOT NULL,
+    idRaccomandataUguale integer NOT NULL,
+    idRaccomandataOpposta integer NOT NULL,
+    CONSTRAINT storiaRaccomandata_pkey PRIMARY KEY (idStoriaRaccomandata),
+	CONSTRAINT storia_storiaRaccomandata_fkey2 FOREIGN KEY (idRaccomandataSimile) REFERENCES storia (idStoria)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+	CONSTRAINT storia_storiaRaccomandata_fkey3 FOREIGN KEY (idRaccomandataUguale) REFERENCES storia (idStoria)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+	CONSTRAINT storia_storiaRaccomandata_fkey4 FOREIGN KEY (idRaccomandataOpposta) REFERENCES storia (idStoria)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+
+CREATE TABLE suggerisce
+(
+    idSto integer,
+    idStoRac integer,
+    CONSTRAINT suggerisce_pkey PRIMARY KEY (idSto, idStoRac),
+    CONSTRAINT storia_suggerisce_fkey FOREIGN KEY (idSto) REFERENCES storia (idStoria)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT storiaRaccomandata_suggerisce_fkey FOREIGN KEY (idStoRac) REFERENCES storiaRaccomandata (idStoriaRaccomandata)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+CREATE TABLE giudizio
+(
+    emailUtente varchar(35),
+    idStoriaGiudicata integer,
+    commento varchar(255),
+    likeStoria boolean NOT NULL,
+    votoLikert smallint,
+    CONSTRAINT giudizio_pkey PRIMARY KEY (emailUtente, idStoriaGiudicata),
+    CONSTRAINT utente_giudizio_fkey FOREIGN KEY (emailUtente) REFERENCES utente (email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT storia_giudizio_fkey FOREIGN KEY (idStoriaGiudicata) REFERENCES storia (idStoria)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT giudizio_check CHECK (votoLikert > 0 AND votoLikert <= 10)
+);
+
+CREATE TABLE sensazione
+(
+    emailUtente varchar(35),
+    titoloOp varchar(35),
+    codiceA integer,
+    risposta1 varchar(255) NOT NULL,
+    risposta2 varchar(255) NOT NULL,
+    risposta3 varchar(255) NOT NULL,
+    hashtag varchar(15),
+    emoij varchar(35),
+    CONSTRAINT sensazione_pkey PRIMARY KEY (emailUtente, titoloOp, codiceA),
+    CONSTRAINT utente_sensazione_fkey FOREIGN KEY (emailUtente) REFERENCES utente (email)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    CONSTRAINT operaArte_sensazione_fkey FOREIGN KEY (titoloOp, codiceA) REFERENCES operaArte (titoloOpera, codiceAut)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE
+);

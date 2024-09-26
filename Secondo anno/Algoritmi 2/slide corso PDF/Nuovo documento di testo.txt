@@ -1,0 +1,38 @@
+ArrayList<String> visitaBFS(Grafo G, Vertice s){
+	//s indica la sorgente
+	//inseriro nella frangia tutti i vertici grigi visitati
+	//la frangia sarà utilizzata come una coda
+	ArrayList<Vertice> frangia = arrayList vuota;
+	ArrayList<String> soluzione = arrayList vuota;	
+	
+	//i colori e le distanze sono impostate all'interno di due array diversi un array per i colori e uno per le distanze
+	//quello dei colori si chiamerà dei colori quello delle distanze invece distanze.
+	imposto il colore di s a grigio;
+	imposto la distanza di s da se stesso a 0;
+	aggiungo nella testa della frangia il vertice s;
+	
+	While(frangia is not empty){
+		Vertice u = prendi la testa della frangia;	
+		ArrayList<Vertice> adiacenti = ottieni i vertice adiacenti ad u;  
+		
+		for(Vertice v : adiacenti){
+		    if(v è di colore bianco){
+		       imposto il colore di v a grigio;
+		       imposto la distanza di v da s a 1+ la distanza di u da s;
+		       aggiungo nella coda della frangia il vertice v;
+		       
+		       if(distanza di v == 0 || distanza di v == 1){
+			imposta in soluzione in posizione i per v la lettera V; 
+		       }
+		       else if(distanza di v == 2 || distanza di v == 3){
+			imposta in soluzione in posizione i per v la lettera M; 
+		       }
+		       else if(distanza di v >= 4){
+			imposta in soluzione in posizione i per v la lettera L; 
+		       } 
+		   }
+		}
+		imposto il colore di u in nero;
+		tolgo u dalla testa della frangia;
+	}
+}

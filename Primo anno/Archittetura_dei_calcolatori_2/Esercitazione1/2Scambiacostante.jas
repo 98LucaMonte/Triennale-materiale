@@ -1,0 +1,22 @@
+.constant
+K 1024
+.end-constant
+.main
+.var
+x
+y
+.end-var
+    // Inizializzo x e y ai valori 3 e 1024
+    BIPUSH 3
+    ISTORE x    // x=3
+    LDC_W K  
+    ISTORE y    // y=K (= 1024)
+                // Scambio x e y
+    ILOAD x
+    ILOAD y
+    ISTORE x
+    ISTORE y 
+               // vedere il risultato in memoria
+    OUT
+    HALT
+.end-main

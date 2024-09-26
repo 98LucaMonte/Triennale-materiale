@@ -1,0 +1,18 @@
+UPDATE autore SET datamorte = '1519-05-02' WHERE codiceautore = 1;
+
+DELETE FROM autore WHERE codiceautore = 1;
+
+UPDATE operaarte SET online=true WHERE codiceaut = 2 and titoloopera = 'La Pietà';
+
+DELETE FROM operaarte WHERE codiceaut = 2 and titoloopera = 'La Pietà';
+
+UPDATE gruppo
+SET emailsupervisoregruppo='20022222@studenti.uniupo.it'
+WHERE nome='gruppo1' and emailcreatoregruppo='20033333@studenti.uniupo.it';
+
+UPDATE giudizio
+SET likestoria=true, votolikert=8
+WHERE emailutente='20033851@studenti.uniupo.it' and idstoriagiudicata=2;
+
+DELETE FROM utente
+WHERE email = '20026665@studenti.uniupo.it';

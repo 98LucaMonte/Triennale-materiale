@@ -1,0 +1,15 @@
+.main
+.var
+x
+y
+.end-var
+BIPUSH 1
+ISTORE x
+BIPUSH 2
+ISTORE y
+ILOAD x
+ILOAD y
+ISTORE x
+ISTORE y
+HALT
+.end-main

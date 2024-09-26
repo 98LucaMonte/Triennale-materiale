@@ -1,0 +1,36 @@
+.main
+.var 
+X
+Y
+result
+.end-var
+BIPUSH 2
+ISTORE Y
+BIPUSH 6
+ISTORE X
+ILOAD X
+ILOAD Y
+ISUB
+ISTORE result
+ILOAD result
+DUP
+DUP
+IFLT Stampa_N 
+IFEQ  Stampa_Y
+GOTO Ciclo1
+Ciclo1: ILOAD result
+        ILOAD Y
+        ISUB
+        ISTORE result
+        ILOAD result
+		IFLT Stampa_N
+        IFEQ  Stampa_Y
+        GOTO Ciclo1
+Stampa_N: BIPUSH 0x4E
+          OUT
+          GOTO Fine
+Stampa_Y: BIPUSH 0x59
+          OUT
+          GOTO Fine
+Fine: HALT
+.end-main

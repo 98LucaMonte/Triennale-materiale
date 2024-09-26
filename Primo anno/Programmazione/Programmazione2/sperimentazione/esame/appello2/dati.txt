@@ -1,0 +1,5 @@
+AA001 Thriller 10 CD
+AA002 Back_In_Black 15 CD
+AA003 The_Dark_Side_Of_The_Moon 20 CD
+AA004 Bat_Out_Of_Hell 35 LP
+AA005 Millennium 30 LP 

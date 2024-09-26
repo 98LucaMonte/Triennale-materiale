@@ -1,0 +1,31 @@
+.constant
+OBJREF    0x40
+INVIO     0x0A // ASCII INVIO
+.end-constant
+.main
+BIPUSH 0
+leggicarattere:
+	LDC_W OBJREF
+    INVOKEVIRTUAL getCharacter
+	DUP
+	LDC_W INVIO     // controlla se il carattere è == 0x30 (codice ASCII di '0')
+	IF_ICMPEQ fine  // se è stato premuto enter
+	OUT
+nulla:  
+	POP
+	GOTO leggicarattere
+fine:
+HALT
+.end-main
+.method getCharacter()
+leggicarattere:
+	IN
+	DUP
+	IFEQ nulla
+	DUP
+	goto fine
+	nulla:  
+	      POP
+	      GOTO leggicarattere
+fine: IRETURN
+.end-method

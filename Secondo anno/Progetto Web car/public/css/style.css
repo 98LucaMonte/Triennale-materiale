@@ -1,0 +1,207 @@
+
+/*stile per pagina presentazione*/
+
+.img-logo {
+  height: 35%;
+  width: 35%;
+}
+
+.margin-main-presentazione-top-img {
+  margin-top: 10%;
+  font-family: sans-serif;
+  font-size: 45px;
+  color: rgb(255, 255, 255);
+  padding-top: 1rem;
+  padding-bottom: 8rem;
+  background-image: url('../img/imgmain.png');
+  background-color: #848484;
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: multiply;
+}
+
+
+/*Aggiusta l'immagine principale*/
+@media only screen and (max-width: 480px) {
+  .margin-main-presentazione-top-img {
+      margin-top: 40%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      padding-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .margin-main-presentazione-top-img p {
+      font-size: 24px;
+  }
+}
+
+.margin-form {
+  margin-top: 11%;
+}
+
+.style-header {
+  background-color: rgb(222, 222, 222);
+}
+
+@media screen and (min-width: 1024px) {
+  .immagine-side {
+    width: 500px; /* Modifica la larghezza desiderata */
+    height: auto; /* Imposta l'altezza su "auto" per mantenere l'aspetto proporzionato */
+  }
+}
+
+
+.style-footer {
+  background-color: rgb(16, 15, 15);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.container-fluid-center-element {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 576px) {
+  .img-logo {
+      max-width: 80%;
+  }
+
+  .text-center {
+      text-align: center;
+  }
+
+  .row {
+      flex-direction: column;
+  }
+
+  .order-element1 {
+      order: 1;
+  }
+
+  .order-element0 {
+      order: 0;
+  }
+}
+
+
+/*fine stile per pagina presentazione*/
+
+/*stile pagina login & registrazione*/
+
+.margin-top-form-login{
+  margin-top: 10%;
+}
+
+.margin-label-input-form {
+  margin: 4%;
+}
+
+.color-form {
+  background-color: rgb(233, 232, 232);
+}
+
+@media only screen and (max-width: 540px) {
+  .color-form {
+      margin-bottom: 10%;
+  }
+
+  .margin-top-form-login{
+      margin-top: 35%;
+  }
+
+  .margin-label-input-form {
+      margin: 2%;
+  }
+}
+
+/*fine stile pagina login & registrazione*/
+
+/*stile per pagina utente*/
+
+.margin-top-header-main{
+  margin-top: 10%;
+}
+
+@media only screen and (max-width: 540px) {
+  
+  .margin-top-header-main{
+      margin-top: 35%;
+  }
+}
+
+.margin-form-comandi-utente {
+ margin-bottom: 10%;
+}
+
+.color-card {
+  background-color: rgb(233, 232, 232) !important;
+}  
+
+.color-row-table{
+  background-color: rgb(233, 232, 232) !important;
+}
+
+.margin-table-utente {
+  margin-bottom: 5%;
+}
+
+.padding-form-info-utente{
+  padding-left: 5% !important;
+  padding-right: 5%;
+  padding-bottom: 5%;
+  padding-top: 2%;
+}
+
+.color-form-info-utente {
+  background-color: rgb(230, 227, 227) !important;
+  margin: 1%;
+  border-radius: 5% !important;
+}
+
+.color-form {
+  background-color: rgb(233, 232, 232);
+}
+
+.small-form {
+  max-width: 300px; 
+  margin: 0 auto; 
+}
+
+.margin-top-header-main-aggiungi-veicolo{
+  margin-top:1%;
+}
+
+@media only screen and (max-width: 540px) {
+  
+  .padding-aggiungi-veicolo{
+      padding: 5%;
+  }
+
+  .margin-top-header-main-aggiungi-veicolo{
+      margin-top: 35%;
+  }
+}
+
+@media (max-width: 480px) {
+  .table td, .table th {
+     font-size: 12px;
+  }
+  
+}
+
+.table {
+  margin: 0;
+  padding: 0;
+}
+/*fine stile per pagina utente*/

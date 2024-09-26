@@ -1,0 +1,30 @@
+.constant
+NUM 10
+.end-constant
+.main
+.var
+cont
+.end-var
+
+BIPUSH 0
+ISTORE cont
+  
+leggi:
+  IN 
+  DUP
+  IFEQ nulla
+  DUP 
+  OUT
+  IINC cont 1
+  ILOAD cont
+  LDC_W NUM
+  ISUB
+  IFLT leggi
+  GOTO fine
+  
+nulla:
+   POP
+   GOTO leggi
+fine:
+  HALT
+.end-main

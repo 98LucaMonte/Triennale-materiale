@@ -1,0 +1,65 @@
+.constant
+OBJREF 0xFF
+.end-constant
+
+.main
+LDC_W OBJREF
+BIPUSH 9
+BIPUSH 0
+INVOKEVIRTUAL stampa
+HALT
+.end-main
+
+.method stampa(n,s)
+.var 
+pari
+dispari
+result
+decine
+.end-var
+BIPUSH 0
+ISTORE decine
+BIPUSH 2
+ISTORE pari
+BIPUSH 1
+ISTORE dispari 
+ILOAD s
+IFEQ stampapari
+GOTO stampadispari
+stampapari: ILOAD decine
+            BIPUSH 0x30
+			IADD
+			OUT
+            ILOAD pari 
+			BIPUSH 0x30
+			IADD
+			ISTORE result
+			ILOAD result
+			OUT
+			IINC pari 2
+			ILOAD n
+			ILOAD pari
+			ISUB
+			IFLT fine
+			GOTO stampapari
+stampadispari: ILOAD decine
+               BIPUSH 0x30
+			   IADD
+			   OUT
+               ILOAD dispari 
+			   BIPUSH 0x30
+			   IADD
+			   ISTORE result
+			   ILOAD result
+			   OUT
+			   IINC dispari 2
+			   ILOAD n
+			   ILOAD dispari
+			   ISUB
+			   IFLT fine
+			   GOTO stampadispari
+fine: IRETURN
+.end-method
+
+
+			

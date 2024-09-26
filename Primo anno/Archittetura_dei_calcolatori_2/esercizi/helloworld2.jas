@@ -1,0 +1,68 @@
+//Modificare l’esercizio io precedente per stampare il valore di “i” ad ogni iterazione prima di “Hello World!”
+.MAIN
+.VAR
+i
+y
+.END-VAR
+BIPUSH 1
+ISTORE i
+ciclo:
+     ILOAD i
+     BIPUSH 0x30
+     IADD
+     OUT
+     BIPUSH 0x20//spazio
+     OUT
+helloworld:
+	 BIPUSH 0X48
+     OUT
+     BIPUSH 0X45
+     OUT
+     BIPUSH 0X4C
+     OUT
+     BIPUSH 0X4C
+     OUT
+     BIPUSH 0X4F
+     OUT
+     BIPUSH 0X20
+     OUT
+     BIPUSH 0X57
+     OUT
+     BIPUSH 0X4F
+     OUT
+     BIPUSH 0X52
+     OUT
+     BIPUSH 0X4C
+     OUT
+     BIPUSH 0X44
+     OUT
+     IINC i 1
+     ILOAD i
+     BIPUSH 11
+     ISUB
+     IFEQ fine
+     BIPUSH 0x0A
+	 OUT
+	 ILOAD i
+	 BIPUSH 10
+	 ISUB
+	 IFEQ ciclo2
+	 GOTO ciclo
+ciclo2:     
+	 BIPUSH 1
+	 ISTORE y
+	 ILOAD y 
+	 BIPUSH 0x30
+	 IADD
+	 OUT
+	 IINC y -1
+	 ILOAD y
+	 BIPUSH 0x30
+	 IADD
+	 OUT
+	 BIPUSH 0x20//spazio
+	 OUT
+	 GOTO helloworld
+fine: 
+     HALT
+.end-main

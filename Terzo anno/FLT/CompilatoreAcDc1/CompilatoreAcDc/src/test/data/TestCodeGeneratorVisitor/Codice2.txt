@@ -1,0 +1,6 @@
+int tempa = 100;
+float tempb = 60.4356;
+tempb = tempa;
+print tempb;
+tempa = 1 / 6;
+print tempa;

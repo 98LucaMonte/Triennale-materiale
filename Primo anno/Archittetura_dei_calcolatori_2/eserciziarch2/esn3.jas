@@ -1,0 +1,40 @@
+.main
+.var
+i
+.end-var
+BIPUSH 0
+ISTORE i
+ciclo :
+BIPUSH 0x48//H
+OUT
+BIPUSH 0x45//e
+OUT
+BIPUSH 0x4C//l
+OUT
+BIPUSH 0x4C//l
+OUT
+BIPUSH 0x4F//o
+OUT
+BIPUSH 32//spazio
+OUT
+BIPUSH 0x57//W
+OUT
+BIPUSH 0x4F//o
+OUT
+BIPUSH 0x52//r
+OUT
+BIPUSH 0x4C//l
+OUT
+BIPUSH 0x44//d
+OUT
+BIPUSH 0x21//!
+OUT
+INC i 1
+BIPUSH 0x0A//stampa a capo
+OUT
+ILOAD i
+BIPUSH 10
+ISUB
+IFLT ciclo
+HALT
+.end-main

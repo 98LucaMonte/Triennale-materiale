@@ -1,0 +1,36 @@
+.constant
+OBJREF 0x40
+.end-constant
+.main
+.var
+risultato
+.end-var
+	LDC_W OBJREF // prepara parametri da passare al metodo DIFF_NEG_YN
+	BIPUSH 10
+	BIPUSH 15
+	INVOKEVIRTUAL DIFF_NEG_YN
+	ISTORE risultato
+	HALT
+.end-main
+
+.method DIFF_NEG_YN (p1,p2)
+.var
+diff
+d
+.end-var
+	ILOAD p1 	// Inserisce il primo parametro in cima allo stack
+	ILOAD p2 	// Inserisce il primo parametro in cima allo stack
+	ISUB 		// Sottrae: p1-p2 (risultato in cima allo stack)
+	ISTORE diff 	// Memorizza la differenza in diff
+	ILOAD diff 	// Inserisce diff in cima allo stack
+	IFLT lt 	// If diff < 0, goto lt (ovvero se p1<p2 goto lt)
+	BIPUSH 0x4E 	// else, print "N"
+	OUT
+	GOTO return
+lt: 	BIPUSH 0x59 	// (diff < 0)
+	OUT 		// print "Y"
+return: ILOAD diff 	// Inserisce diff in cima allo stack
+	IRETURN 	// Return (chi invoca il metodo trovera' diff
+			// in cima allo stack, come valore restituito
+			// dal metodo
+.end-method

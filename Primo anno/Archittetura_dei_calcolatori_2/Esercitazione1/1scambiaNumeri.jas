@@ -1,0 +1,18 @@
+.main
+.var
+x
+y
+.end-var
+    // Inizializzo x e y ai valori 1 e 2
+    BIPUSH 1
+    ISTORE x    // x=3
+    BIPUSH 2
+    ISTORE y 
+                // Scambio x e y
+    ILOAD x
+    ILOAD y
+    ISTORE x
+    ISTORE y 
+               // vedere il risultato in memoria
+    HALT
+.end-main

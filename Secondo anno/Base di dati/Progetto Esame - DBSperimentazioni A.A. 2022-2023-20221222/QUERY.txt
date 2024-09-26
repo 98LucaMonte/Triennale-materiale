@@ -1,0 +1,343 @@
+//query 1 = 5
+/*eliminando uno alla volta il commento dalla prima clausola WHERE si ottiene solamente l'elenco degli artisti viventi,
+mentre dalla seconda gli artisti deceduti,
+altrimenti sarà restituito l'intero elenco degli artisti*/
+
+//PRIMO MODO
+
+select autore.nome "NomeArtista", count(storia.idStoria) "NumeroStorie", avg((storia.tempofine-storia.tempoinizio)*60) "DurataMediaStoria(minuti)"
+from(( (autore inner join operaarte on autore.codiceAutore = operaarte.codiceAut)
+	  	inner join contiene on contiene.titoloOp=operaarte.titoloOpera and contiene.codiceA = operaarte.codiceAut) 
+		inner join storia on storia.idStoria = contiene.idSto)
+--where autore.dataMorte is null
+--where autore.dataMorte is not null
+group by autore.nome, autore.dataMorte ,operaarte.titoloOpera
+
+//SECONDO MODO
+
+select t1.nome,t1.codiceAutore,t1.*
+from (
+	  select autore.nome,autore.codiceAutore,autore.datamorte "ArtistaDeceduto",
+	  	 count(contiene.idSto) "countNumStorieCompareArtista",
+	  	 cast(EXTRACT(EPOCH FROM (avg(storia.tempofine-storia.tempoinizio)) )/60 as numeric(5)) "durata (minuti)"
+	  from autore inner join operaarte on autore.codiceAutore = operaarte."codiceaut" 
+	       inner join contiene on (operaarte."codiceaut" = contiene.codicea and contiene.titoloop = operaarte.titoloopera)
+	       inner join storia on storia.idStoria = contiene.idSto
+	  group by autore.codiceAutore,autore.nome) as t1
+where t1."ArtistaDeceduto" is not null
+order by t1."countNumStorieCompareArtista" asc
+
+//query 2 
+
+select *
+from(
+	select utente.nome "NomeCreatoreStoria",età.etautente "etaUtente",storia.idstoria "idStoria",
+		   storia.titolo "TitoloStoria",count(contiene.titoloop) "numero opere"
+	from (utente inner join "età" on utente.email=età.email) 
+		  inner join storia on storia."emailCreatoreStoria"=utente.email 
+		  inner join contiene on contiene.idSto = storia.idStoria
+	group by utente.nome, storia.idStoria,età.etautente
+	) as t1 
+where t1."numero opere">=2 and (t1."etaUtente" BETWEEN 20 and 30)
+
+
+
+/*
+Query 3
+Restituire CF, nome, cognome, età e data di nascita dell'utente che ha creato il maggior numero di storie che NON HANNO ricevuto commenti da altri utenti. 
+Ordinare il risultato in ordine decrescente per numero storie create
+*/
+create view "età" (email,etaUtente) as (
+	select email,cast( ( (now()::date-dataNascita::date)/365 ) as numeric(3,0) ) "eta utente"
+	from utente
+);
+
+select utente.nome,utente.cognome,utente.dataNascita,età.etautente,count(giudizio.idStoriaGiudicata) "Numero Storie"
+from ( (utente join "età" on utente.email= età.email) 
+	inner join storia on utente.email = storia."emailCreatoreStoria") 
+	inner join giudizio on storia.idStoria = giudizio.idStoriaGiudicata
+where giudizio.commento is NULL and storia."emailCreatoreStoria" <> giudizio.emailUtente 
+group by utente.nome,utente.cognome,utente.dataNascita,età.etautente
+order by "Numero Storie" desc
+
+
+/*
+Query 4
+Restituire l’elenco delle opere che sono state maggiormente selezionate dagli utenti nella creazione delle loro storie, che hanno età compresa [25<=x<=55] 
+(estremi inclusi). Ordinare il risultato in ordine decrescente per TitoloOpera
+*/
+select count(contiene.idSto) "Numero volte selezionato",operaarte.titoloOpera,autore.nome,EXTRACT(YEAR FROM (autore.dataNascita)) AS anno
+from ( ( (utente inner join storia on storia."emailCreatoreStoria" = utente.email) 
+	 	inner join contiene on contiene.idSto = storia.idstoria)
+		inner join operaarte on contiene.titoloop = operaarte.titoloOpera and contiene.codicea = operaarte.codiceAut)
+		inner join autore on autore.codiceAutore = operaarte.codiceAut
+WHERE extract(year from AGE(now(),utente.dataNascita)) between 25 and 55
+group by operaarte.titoloOpera,autore.nome,autore.dataNascita 
+--order by titoloOpera desc
+order by "Numero volte selezionato" desc
+
+/*
+Query 6
+Per ogni utente che ha creato almeno 2 storie, si vuole conoscere la durata media delle sue storie 
+(AVG(TimeStampFine-TimeStampInizio)) in minuti, numero di like e numero totale di commenti.
+Ordinare il risultato in ordine decrescente per età dell'utente.
+*/
+
+select t2.nome,t2.cognome,t2.etautente,cast( (EXTRACT(EPOCH FROM t2."durata"))/60 as numeric(10,0)) "durata (minuti)",t2."numeroCommenti",t2."numeroLike"
+
+from	(select t1.nome,t1.cognome,t1.etautente,count(t1.idStoria) "numeroStorieCreate",
+		 		sum(t1."numeroCommenti") "numeroCommenti",sum(t1."numeroLike") "numeroLike",
+		 		avg("tf"-"ti") "durata"
+		from  (
+			
+			   select utente.email,utente.nome,utente.cognome,età.etautente,storia.idStoria,
+					  storia.tempofine "tf",storia.tempoinizio "ti",
+			          count(giudizio.commento) "numeroCommenti",count(case when giudizio.likeStoria = true then giudizio end) "numeroLike"
+			   from (utente inner join "età" on utente.email=età.email) 
+				   inner join storia on utente.email = storia."emailCreatoreStoria"
+				   left join giudizio on storia.idStoria = giudizio.idStoriaGiudicata
+			   group by  utente.email,utente.nome,utente.cognome,età.etautente,storia.idStoria
+			
+			  ) as t1
+		 
+		group by t1.email,t1.nome,t1.cognome,t1.etautente
+		) as t2
+
+where "numeroStorieCreate">=2
+
+
+
+/*
+Query 7
+Per ogni curatore che lavora all'interno del museo che ha creato almeno 4 storie, 
+si vuole conoscere l'età media degli utenti che hanno commentato le sue storie. 
+Restituire il risultato in ordine decrescente per durata media (AVG(TimeStampFine-TimeStampInizio)) 
+in minuti delle storie create da curatore museale.
+*/			
+			
+			select *
+			from (--quarta query
+			select  t3."nomeCreatoreStoria",t3."cognomeCreatoreStoria",t3."etàCreatoreStoria",count(t3.idStoria) "NumeroStorieCreate",
+					avg(t3."durataMediaStorie") "durataMediaStorie",
+					cast(avg(t3."etàMediaUtentiGiudicanti") as numeric (3))"etàMediaUtentiGiudicanti",
+					sum(t3."numeroLikeStoria") "numeroLikeStoria"
+			from
+				(--terza query
+					select t2."nomeCreatoreStoria",t2."cognomeCreatoreStoria",t2."etàCreatoreStoria",t2.idStoria,
+						   avg(t2."tf"-t2."ti") "durataMediaStorie",avg(t2.etaUtente) "etàMediaUtentiGiudicanti",
+						   count(case when t2.likestoria = true then t2 end) "numeroLikeStoria"
+					from
+						(--seconda query
+						select t1."nomeCreatoreStoria",t1."cognomeCreatoreStoria",t1."etàCreatoreStoria",t1."tf",t1."ti",
+							   t1.idStoria,t1."utenteGiudicante",t1.likestoria,età.etaUtente
+						from
+							(--prima query
+							select utente.nome "nomeCreatoreStoria",utente.cognome "cognomeCreatoreStoria",età.etaUtente "etàCreatoreStoria",
+								   storia.tempofine "tf",storia.tempoinizio "ti",
+								   storia.idStoria,giudizio.emailUtente "utenteGiudicante",giudizio.likestoria
+							from utente inner join età on età.email = utente.email
+									 inner join storia on storia."emailCreatoreStoria" = utente.email
+									 left join giudizio on storia.idStoria = giudizio.idStoriaGiudicata 
+							where utente.categoria = 'curatore'
+							) 
+						as t1 left join età on età.email = t1."utenteGiudicante"
+						)
+					as t2
+					group by t2."nomeCreatoreStoria",t2."cognomeCreatoreStoria",t2."etàCreatoreStoria",t2.idStoria
+			 ) as t3
+			 group by  t3."nomeCreatoreStoria",t3."cognomeCreatoreStoria",t3."etàCreatoreStoria"
+		 ) as t4
+		 where t4."NumeroStorieCreate" >=4
+
+/*
+Query 8
+Restituire le storie che sono state create da utenti di età compresa tra [25<=x<=40] anni (estremi inclusi)
+CHE NON SONO curatori ma che hanno ricevuto commenti solo da curatori.
+Ordinare il risultato in ordine decrescente per durata della storia (AVG(TimeStampFine-TimeStampInizio))
+*/		
+	select  t2.idStoria,t2.titolo,--t2."nomeCreatoreStoria",t2."cognomeCreatoreStoria",t2."etàUtenteCreatoreStoria",
+			AVG(t2."tf"-t2."ti") "durata media Storia",count(t2.commento) "numeroCommenti",
+			cast(avg("etàUtenteGiudicante") as numeric(3)) "etàMediaUtentiGiudicanti",
+			count(case when t2.likestoria = true then t2 end) "NumerolikeStoria"
+	from(
+		select t1.*,età.etaUtente "etàUtenteGiudicante"
+		from (
+			select utente.nome "nomeCreatoreStoria",utente.cognome "cognomeCreatoreStoria",utente.email "emailCreatoreStoria",
+				   età.etautente "etàUtenteCreatoreStoria",storia.idStoria,storia.tempoinizio "ti",storia.tempofine "tf",storia.titolo,
+				   giudizio.emailUtente "utentegiudicante",giudizio.commento,giudizio.likestoria
+			from utente inner join età on età.email = utente.email
+				 inner join storia on utente.email = storia."emailCreatoreStoria"
+				 inner join giudizio on giudizio.idStoriaGiudicata = storia.idStoria
+			where utente.categoria<>'curatore' and età.etaUtente BETWEEN 25 and 40
+			)
+			as t1 inner join età on t1."utentegiudicante" = età.email
+				  inner join utente on  t1."utentegiudicante"= utente.email
+		where utente.categoria='curatore'
+		) 
+		as t2
+	group by t2."nomeCreatoreStoria",t2."cognomeCreatoreStoria",t2."etàUtenteCreatoreStoria",t2.idStoria,t2.titolo
+
+/*
+Query 9 //da rivedere
+Restituire nome, cognome e età (in anni) dei curatori che hanno commentato almeno 4 storie di utenti di età compresa tra [20<=x<=35] anni (estremi inclusi).
+Ordinare il risultato per numero decrescente di commenti.
+*/			
+			select t3."emailUtenteCommenta",t3."nome curatore",t3."cognome curatore",t3."eta curatore",
+				   AVG(t3."tf"-t3."ti") "durata media Storie commentate",count(t3.commento) "numero commenti",
+				   AVG("etàcreatorestoria") "etàMedia"
+			from
+			(
+				select t2.*,utente.nome "nome curatore",utente.cognome "cognome curatore",utente.categoria "categoria",età.etaUtente "eta curatore"
+				from
+				(--seconda query
+					select t1.*,giudizio.commento,giudizio.emailUtente "emailUtenteCommenta"
+					from
+					(--prima query
+						Select idStoria,utente.email "creatoreStoria",storia.tempofine "tf",storia.tempoinizio "ti",età.etaUtente "etàcreatorestoria"
+						from utente inner join età on età.email = utente.email
+							inner join storia on utente.email = storia."emailCreatoreStoria"
+						where età.etaUtente BETWEEN 20 AND 35
+					)
+					as t1 inner join giudizio on giudizio.idStoriaGiudicata = t1.idStoria
+				)
+				as t2 inner join utente on t2."emailUtenteCommenta" = utente.email
+					inner join età on età.email = t2."emailUtenteCommenta"
+				where utente.categoria = 'curatore'
+			) as t3
+			group by t3."emailUtenteCommenta",t3."nome curatore",t3."cognome curatore",t3."eta curatore"
+
+
+
+			
+select * 
+from giudizio 
+where emailUtente = '20011111@studenti.uniupo.it' or emailUtente = '20022222@studenti.uniupo.it'
+order by emailUtente
+
+/*
+Query 9
+Restituire nome, cognome e età (in anni) dei curatori che hanno commentato almeno 4 storie di utenti di 
+età compresa tra [20<=x<=35] anni (estremi inclusi). Ordinare il risultato per numero decrescente di commenti
+*/			
+			SELECT *
+			FROM
+			(
+				SELECT età.etaUtente "etàUtenteGiudicante",utente.nome "nomeUtenteGiudicante",utente.cognome "cognomeUtenteGiudicante",
+					   cast(avg("etaCreatoreStoria") as numeric(3)) "etaCreatoreStoriaMedia",count(t1.commento) "numeroCommenti",
+					   cast(EXTRACT(EPOCH FROM avg("tf" - "ti"))/60 as numeric (10)) "durataMinuti"
+				FROM 
+				(
+					SELECT idStoria,tempofine "tf", tempoinizio "ti",utente.email "emailCreatoreStoria" ,
+						   utente.nome  "nomeCreatoreStoria",utente.cognome  "cognomeCreatoreStoria",
+						   età.etaUtente  "etaCreatoreStoria",giudizio.emailUtente "emailUtenteGiudicante",giudizio.commento
+					FROM utente inner join età on età.email = utente.email
+						 inner join storia on utente.email = storia."emailCreatoreStoria"
+						 inner join giudizio on storia.idStoria = giudizio.idStoriaGiudicata
+					WHERE età.etaUtente BETWEEN 20 and 35
+				) 
+				as t1 inner join età on età.email = t1."emailUtenteGiudicante"
+					  inner join utente on t1."emailUtenteGiudicante" = utente.email
+				where utente.categoria = 'curatore'
+				group by età.etaUtente,utente.nome,utente.cognome 
+			) as t2
+			order by t2."numeroCommenti" desc
+			
+
+/*
+Query 10
+Restituire nome, cognome e età (in anni) dei curatori che NON hanno commentato 
+almeno 4 storie di utenti di età compresa tra [20<=x<=35] anni (estremi inclusi).
+Ordinare il risultato per numero decrescente di commenti.
+*/
+
+			SELECT *
+			FROM
+			(
+				SELECT età.etaUtente "etàUtenteGiudicante",utente.nome "nomeUtenteGiudicante",utente.cognome "cognomeUtenteGiudicante",
+					   cast(avg("etaCreatoreStoria") as numeric(3)) "etaCreatoreStoriaMedia",count(t1.commento) "numeroCommenti",
+					   cast(EXTRACT(EPOCH FROM avg("tf" - "ti"))/60 as numeric (10)) "durataMinuti"
+				FROM 
+				(
+					SELECT idStoria,tempofine "tf", tempoinizio "ti",utente.email "emailCreatoreStoria" ,
+						   utente.nome  "nomeCreatoreStoria",utente.cognome  "cognomeCreatoreStoria",
+						   età.etaUtente  "etaCreatoreStoria",giudizio.emailUtente "emailUtenteGiudicante",giudizio.commento
+					FROM utente inner join età on età.email = utente.email
+						 inner join storia on utente.email = storia."emailCreatoreStoria"
+						 inner join giudizio on storia.idStoria = giudizio.idStoriaGiudicata
+					WHERE età.etaUtente BETWEEN 20 and 35
+				) 
+				as t1 inner join età on età.email = t1."emailUtenteGiudicante"
+					  inner join utente on t1."emailUtenteGiudicante" = utente.email
+				where utente.categoria = 'curatore'
+				group by età.etaUtente,utente.nome,utente.cognome 
+			) as t2
+			where t2."numeroCommenti" <4
+			order by t2."numeroCommenti" desc
+
+/*
+QUERY 11
+Restituire nome, cognome e età (in anni) dei curatori che hanno commentato almeno 4 storie 
+di utenti fragili che hanno ricevuto almeno 10 like. Ordinare il risultato per numero decrescente di like.
+*/
+
+create view "numeroLike" (idStoria,numero) as (
+	select idStoriaGiudicata,count(case when likestoria = true then giudizio end) "numero" 
+	from giudizio
+	group by idStoriaGiudicata
+);			
+
+
+SELECT *
+				FROM
+				(
+				SELECT utente.email,utente.nome "nomeCuratore",
+					   utente.cognome "cognomeCuratore", età.etaUtente "etàCuratore",
+					   count(t1.commento) "numeroCommenti",count(t1.idStoria) "numeroStorieCommentate"
+				FROM
+				(
+					SELECT storia.idStoria,giudizio.*,"numeroLike".numero "numeroLike"
+					FROM utente inner join storia on utente.email = storia."emailCreatoreStoria"
+						 left join giudizio on storia.idStoria = giudizio.idStoriaGiudicata
+						 inner join "numeroLike" on "numeroLike".idStoria = giudizio.idStoriaGiudicata
+					where utente.categoria = 'fragile'	
+				) 
+				as t1 inner join utente on utente.email = t1.emailutente
+				   inner join età on utente.email = età.email
+				where utente.categoria = 'curatore' and "numeroLike" >=2
+				group by (utente.email,utente.nome,utente.cognome, età.etaUtente)
+				) 
+				as t2
+				WHERE t2."numeroStorieCommentate">
+
+/*
+Query 12
+Restituire, per ogni utente, id, titolo della storia e numero delle opere contenute 
+(nella storia) di tutte le storie suggerite dal sistema che hanno emozioni opposte
+*/
+
+select t1.*,"numeroOpere".numero,storia.titolo,storia."emailCreatoreStoria"
+from
+(
+select utente.nome,storia.idStoria,storiaraccomandata.idraccomandataopposta "idStoriaOpposta"
+from utente inner join storia on storia."emailCreatoreStoria" = utente.email
+	 inner join suggerisce on storia.idStoria = suggerisce.idSto
+	 inner join storiaraccomandata on suggerisce.idStorac = storiaraccomandata.idStoriaRaccomandata
+)
+as t1 inner join "numeroOpere" on "numeroOpere".idStoria = t1."idStoriaOpposta"
+   inner join storia on t1."idStoriaOpposta" = storia.idStoria
+
+create view "numeroOpere" (idStoria,numero) as (
+	select idSto,count(titoloOp) "numero" 
+	from contiene
+	group by idSto
+);
+
+
+
+
+			
+
+			
+
+
+

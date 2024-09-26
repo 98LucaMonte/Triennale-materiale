@@ -1,0 +1,37 @@
+//Si scriva un programma IJVM (solo il main, non è richiesto il metodo) che, dati due numeri naturali x, y con x >= y, stampi “Y” se x è un multiplo 
+//di y, “N” altrimenti (usare 0x4E per ‘”N” e 0x59 per “Y”).
+
+.main
+.var
+x
+y
+result
+.end-var
+BIPUSH 2
+ISTORE y
+BIPUSH 2
+ISTORE x
+ILOAD  x
+ILOAD  y
+ISUB
+ISTORE result
+ILOAD  result
+DUP
+IFLT   nonmultiplo
+IFEQ   multiplo
+GOTO   calcolo
+calcolo: ILOAD  result
+         ILOAD  y
+         ISUB
+		 ISTORE result
+		 ILOAD  result
+		 DUP
+		 IFLT   nonmultiplo
+         IFEQ   multiplo
+         GOTO   calcolo 
+nonmultiplo: BIPUSH 0x4E
+             OUT
+             HALT
+multiplo: BIPUSH 0x59
+          OUT
+	      HALT

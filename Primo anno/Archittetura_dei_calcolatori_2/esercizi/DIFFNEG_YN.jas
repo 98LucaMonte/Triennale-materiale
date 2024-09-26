@@ -1,0 +1,48 @@
+.constant
+OBJREF 0x40
+.end-constant
+.main
+LDC_W OBJREF 
+BIPUSH 5 
+BIPUSH 5
+INVOKEVIRTUAL diffnegYN
+HALT
+.end-main
+.method diffnegYN(y,n)  //y=5 e n=6
+.var
+result
+.end-var
+       ILOAD y
+       ILOAD n
+       ISUB
+       ISTORE result 
+       ILOAD result
+       IFLT NmaggioreY
+       ILOAD result
+       IFEQ uguali 
+       GOTO YmaggioreN         
+NmaggioreY:
+       BIPUSH 0x4E
+       OUT
+       BIPUSH 0x3E
+       OUT
+       BIPUSH 0x59
+       OUT
+       IRETURN
+uguali:
+       BIPUSH 0x4E
+       OUT
+       BIPUSH 0x3D
+       OUT
+       BIPUSH 0x59
+       OUT
+       IRETURN
+YmaggioreN:
+       BIPUSH 0x59
+       OUT
+       BIPUSH 0x3E
+       OUT
+       BIPUSH 0x4E
+       OUT
+       IRETURN
+.end-method

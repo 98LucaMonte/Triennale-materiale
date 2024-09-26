@@ -1,0 +1,82 @@
+.constant
+OBJREF 0xAAAA // valore arbitrario (param. OBJREF invokevirtual)
+.end-constant
+.main
+.var
+a
+.end-var
+input_carattere:
+    LDC_W OBJREF
+    INVOKEVIRTUAL leggicarattere
+elaboracarattere:
+    DUP
+    OUT         // stampo il carattere letto (lo consuma)
+    BIPUSH 0x20 // (blank)
+    OUT
+    BIPUSH 0x30  // 0
+    OUT
+    BIPUSH 0x78  // x
+    OUT
+// codice esadecimale
+    DUP
+    DUP
+    BIPUSH 0x0F // Carattere AND maschera 0x0F estrae la cifra esadec. meno significativa
+    IAND
+    SWAP
+    BIPUSH 0xF0
+    IAND        // Carattere AND maschera 0xF00 estrae la cifra esadec. + significativa
+    BIPUSH 0
+    ISTORE a    // a=0 - destinato a contenere il valore (tra 0 e 15) della cifra + significativa
+ciclo:
+    DUP
+    IFEQ stampa // quando in a ho il valore della cifra piu' signif. procedo a stampare
+    BIPUSH 0x10 // altrimenti divido per 16 (tramite sottrazioni successive)
+    ISUB
+    IINC a 1
+    GOTO ciclo
+stampa:
+    POP // elimino lo 0 che era rimasto sul top dello stack
+    LDC_W OBJREF
+    ILOAD a   // stampa la cifra esadecimale piu' significativa
+    INVOKEVIRTUAL esadecimale
+    OUT
+    LDC_W OBJREF
+    SWAP // porto sul top dello stack (sopra OBJREF) la cifra esadecimale meno significativa
+    INVOKEVIRTUAL esadecimale
+    OUT
+// fine stampa esadecimale
+    BIPUSH 0xA // line feed (a capo)
+    OUT
+    BIPUSH 0x2E // codice ascii del .
+    IF_ICMPEQ fine
+    GOTO input_carattere
+fine: HALT
+.end-main
+// metodo che restituisce il carattere ASCII che corrisponde alla rappresentazione in 
+// codifica esadecimale di n (0 <= n <= 15)
+.method esadecimale(n)     
+    ILOAD n
+    BIPUSH 10
+    ISUB
+    IFLT da0a9 // se la cifra è tra 0 e 9 basta aggiungere 0x30 per ottenere la codifica ascii
+    ILOAD n
+    BIPUSH 0x37 // altrimenti se è tra 10 e 15 devo aggiungere 0x37 (cod.ascii A=0x41)
+    IADD
+    GOTO ritorno
+da0a9:
+    ILOAD n
+    BIPUSH 0x30
+    IADD
+ritorno: IRETURN
+.end-method
+.method leggicarattere()
+leggi_input:
+    IN
+    DUP
+    IFEQ buffervuoto    // se IN ha restituito 0 non è stato 
+                        // ancora inserito alcun carattere
+    IRETURN             // altrimenti acquisito carattere
+buffervuoto:            
+    POP                 // elimina lo zero (generato dalla DUP)
+    GOTO leggi_input
+.end-method
